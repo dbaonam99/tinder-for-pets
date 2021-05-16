@@ -3,9 +3,13 @@ import { Text, TouchableOpacity, View } from 'react-native'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 import { Icon } from 'react-native-gradient-icon'
 
-const icons = ['logo-firebase', 'heart', 'chatbubble', 'person']
-
 const Navigation = ({ state, descriptors, navigation }) => {
+  const icons = [
+    { name: 'flame', type: 'ionicon' },
+    { name: 'star-sharp', type: 'ionicon' },
+    { name: 'md-chatbubbles-sharp', type: 'ionicon' },
+    { name: 'person', type: 'ionicon' },
+  ]
   return (
     <View
       style={{
@@ -25,7 +29,8 @@ const Navigation = ({ state, descriptors, navigation }) => {
             : options.title !== undefined
             ? options.title
             : route.name
-        const name = icons[index]
+        const name = icons[index].name
+        const type = icons[index].type
 
         const isFocused = state.index === index
 
@@ -56,24 +61,24 @@ const Navigation = ({ state, descriptors, navigation }) => {
           >
             <View>
               <Icon
-                size={30}
-                type="ionicons"
-                name="flame"
+                size={29}
+                type={type}
+                name={name}
                 colors={
                   isFocused
                     ? [
                         {
-                          color: 'rgba(52,161,251,1)',
+                          color: '#fc9842',
                           offset: '0',
                           opacity: '1',
                         },
                         {
-                          color: 'rgba(52,68,251,1)',
+                          color: '#fe5f75',
                           offset: '1',
                           opacity: '1',
                         },
                       ]
-                    : [{ color: '#DDD', offset: '1', opacity: '1' }]
+                    : [{ color: '#a5a5a5', offset: '1', opacity: '1' }]
                 }
               />
             </View>

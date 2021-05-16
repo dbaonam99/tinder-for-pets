@@ -1,5 +1,6 @@
 import React from 'react'
 import { ImageBackground, StyleSheet, Text, View } from 'react-native'
+import { Icon } from 'react-native-gradient-icon'
 
 const img = require('../assets/img/dinesh.jpg')
 
@@ -10,7 +11,9 @@ function Avatar() {
       <View style={styles.info}>
         <Text style={styles.name}>Dương Bảo Nam</Text>
         <Text style={styles.smallInfo}>Quận 2, Hồ Chí Minh</Text>
-        <Text style={styles.icon}> ICON </Text>
+        <Text style={styles.icon}>
+          <Icon size={25} type="material" name="verified" color="#0c70ff" />
+        </Text>
       </View>
     </View>
   )
@@ -41,11 +44,13 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontSize: 13,
     textAlign: 'center',
+    color: '#777',
+    fontWeight: 'bold',
   },
   icon: {
     position: 'absolute',
-    top: 20,
-    right: -40,
+    top: 25,
+    right: -35,
   },
 })
 

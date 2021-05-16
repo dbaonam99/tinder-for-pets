@@ -1,13 +1,15 @@
 import React from 'react'
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { NavigationContainer } from '@react-navigation/native';
-import Matching from './screens/Matching';
-import Navigation from './components/Navigation';
-import Chat from './screens/Chat';
-import Profile from './screens/Profile';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { NavigationContainer } from '@react-navigation/native'
+import Matching from './screens/Matching'
+import Navigation from './components/Navigation'
+import Chat from './screens/Chat'
+import Profile from './screens/Profile'
+import InformationSetting from './screens/InformationSetting'
+import Setting from './screens/Setting'
 
 const App = () => {
-  const Tab = createMaterialTopTabNavigator();
+  const Tab = createMaterialTopTabNavigator()
   return (
     <NavigationContainer>
       <Tab.Navigator tabBar={(props) => <Navigation {...props} />}>
@@ -16,6 +18,8 @@ const App = () => {
         <Tab.Screen name="Chat" component={Chat} />
         <Tab.Screen name="Profile" component={Profile} />
       </Tab.Navigator>
+      <Tab.Screen name="Setting" component={Setting} />
+      <Tab.Screen name="InformationSetting" component={InformationSetting} />
     </NavigationContainer>
   )
 }

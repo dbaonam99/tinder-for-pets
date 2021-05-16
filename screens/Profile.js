@@ -1,19 +1,24 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, ScrollView } from 'react-native'
 import Avatar from '../components/Avatar'
 import ProfileAction from '../components/ProfileAction'
+import ProfileImages from '../components/ProfileImages'
 
-function Profile() {
+function Profile({ navigation }) {
   return (
     <View style={styles.container} onPress={() => {}}>
-      <Avatar />
-      <ProfileAction />
+      <ScrollView>
+        <Avatar />
+        <ProfileAction navigation={navigation} />
+        <ProfileImages />
+      </ScrollView>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
+    overflow: 'scroll',
     alignItems: 'center',
     width: '100%',
     minHeight: '100%',

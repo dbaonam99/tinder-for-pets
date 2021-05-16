@@ -1,24 +1,56 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Icon } from 'react-native-gradient-icon'
+import LinearGradient from 'react-native-linear-gradient'
 
-function ProfileAction() {
+function ProfileAction({ navigation }) {
   return (
     <View style={styles.action}>
-      <View style={styles.actionBtn}>
+      <TouchableOpacity
+        style={styles.actionBtn}
+        onPress={() => navigation.navigate('setting')}
+      >
         <View style={styles.actionIcon}>
-          <Text>icon</Text>
+          <Icon
+            size={29}
+            type="ionicon"
+            name="settings"
+            color="#a5a5a5"
+            style={{
+              alignSelf: 'center',
+            }}
+          />
         </View>
         <Text style={styles.actionText}>Thiết lập</Text>
-      </View>
+      </TouchableOpacity>
       <View style={styles.actionBtn}>
-        <View style={styles.mediaIcon}>
-          <Text>icon</Text>
-        </View>
+        <LinearGradient
+          colors={['#fc9842', '#fe5f75']}
+          style={styles.mediaIcon}
+        >
+          <Icon
+            size={30}
+            type="ionicon"
+            name="camera"
+            color="#fff"
+            style={{
+              alignSelf: 'center',
+            }}
+          />
+        </LinearGradient>
         <Text style={styles.actionText}>Thêm media</Text>
       </View>
       <View style={styles.actionBtn}>
         <View style={styles.actionIcon}>
-          <Text>icon</Text>
+          <Icon
+            size={29}
+            type="ionicon"
+            name="pencil"
+            color="#a5a5a5"
+            style={{
+              alignSelf: 'center',
+            }}
+          />
         </View>
         <Text style={styles.actionText}>sửa thông tin</Text>
       </View>
@@ -44,37 +76,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 90,
     height: 90,
-    borderColor: 'rgba(52,68,251,1)',
-    borderWidth: 2,
     borderRadius: 100,
-    shadowColor: 'rgba(52,68,251,1)',
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.54,
-    shadowRadius: 10.32,
-    elevation: 16,
     marginBottom: 10,
-    backgroundColor: 'rgba(52,68,251,1)',
   },
   actionIcon: {
+    backgroundColor: 'white',
+    marginBottom: 10,
+    display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     width: 70,
     height: 70,
-    borderColor: '#DDD',
-    borderWidth: 2,
     borderRadius: 100,
-    shadowColor: '#000',
+
+    shadowColor: '#677',
     shadowOffset: {
       width: 0,
-      height: 5,
+      height: 0,
     },
-    shadowOpacity: 0.54,
-    shadowRadius: 10.32,
-    elevation: 16,
-    marginBottom: 10,
+    shadowOpacity: 0.32,
+    shadowRadius: 10.46,
   },
   actionText: {
     color: '#999',
