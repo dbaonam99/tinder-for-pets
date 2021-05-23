@@ -1,19 +1,35 @@
-import React, { Component } from 'react';
-import Swiper from 'react-native-deck-swiper';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react'
+import Swiper from 'react-native-deck-swiper'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  ImageBackground,
+} from 'react-native'
 
-// demo purposes only
-function* range(start, end) {
-  for (let i = start; i <= end; i++) {
-    yield i;
-  }
-}
-
-export default class SwipeCard extends Component {
+export default class Matching extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      cards: [...range(1, 50)],
+      cards: [
+        {
+          id: '1',
+          src: 'https://www.elle.vn/wp-content/uploads/2021/02/08/424779/blackpink-rose-ice-cream.jpg',
+        },
+        {
+          id: '2',
+          src: 'https://afamilycdn.com/150157425591193600/2021/4/30/d1-1619800731773450688569.jpeg',
+        },
+        {
+          id: '3',
+          src: 'https://cdnmedia.thethaovanhoa.vn/Upload/qeXw6Srue12aQG46um9kw/files/2021/02/12/the-show-blackpink-6.jpg',
+        },
+        {
+          id: '4',
+          src: 'https://baoquocte.vn/stores/news_dataimages/dieulinh/032021/18/11/rose-blackpink-pha-moi-ky-luc-voi-san-pham-am-nhac-solo-dau-tay.jpg?rt=20210318112645',
+        },
+      ],
       swipedAllCards: false,
       swipeDirection: '',
       cardIndex: 0,
@@ -23,9 +39,9 @@ export default class SwipeCard extends Component {
   renderCard = (card, index) => {
     return (
       <View style={styles.card}>
-        <Text style={styles.text}>
-          {card} - {index}
-        </Text>
+        <View style={styles.imageContainer}>
+          <ImageBackground source={{ uri: card.src }} style={styles.image} />
+        </View>
       </View>
     )
   }
@@ -40,10 +56,6 @@ export default class SwipeCard extends Component {
     })
   }
 
-  swipeLeft = () => {
-    this.swiper.swipeLeft()
-  }
-
   render() {
     return (
       <View style={styles.container}>
@@ -51,33 +63,38 @@ export default class SwipeCard extends Component {
           ref={(swiper) => {
             this.swiper = swiper
           }}
+          backgroundColor={'#FFF'}
           onSwiped={() => this.onSwiped('general')}
           onSwipedLeft={() => this.onSwiped('left')}
           onSwipedRight={() => this.onSwiped('right')}
           onSwipedTop={() => this.onSwiped('top')}
           onSwipedBottom={() => this.onSwiped('bottom')}
-          onTapCard={this.swipeLeft}
+          // onTapCard={this.swipeLeft}
           cards={this.state.cards}
           cardIndex={this.state.cardIndex}
-          cardVerticalMargin={80}
+          cardVerticalMargin={20}
+          cardHorizontalMargin={5}
           renderCard={this.renderCard}
           onSwipedAll={this.onSwipedAllCards}
-          stackSize={3}
-          stackSeparation={15}
+          stackSize={2}
+          stackSeparation={0}
           overlayLabels={{
             bottom: {
-              title: 'BLEAH',
+              title: 'NOPE',
               style: {
                 label: {
-                  backgroundColor: 'black',
-                  borderColor: 'black',
-                  color: 'white',
-                  borderWidth: 1,
+                  borderColor: '#fa2556',
+                  color: '#fa2556',
+                  borderWidth: 5,
+                  opacity: 0.5,
+                  transform: [{ rotate: '30deg' }],
                 },
                 wrapper: {
                   flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  alignItems: 'flex-end',
+                  justifyContent: 'flex-start',
+                  marginTop: 30,
+                  marginLeft: -30,
                 },
               },
             },
@@ -85,10 +102,11 @@ export default class SwipeCard extends Component {
               title: 'NOPE',
               style: {
                 label: {
-                  backgroundColor: 'black',
-                  borderColor: 'black',
-                  color: 'white',
-                  borderWidth: 1,
+                  borderColor: '#fa2556',
+                  color: '#fa2556',
+                  borderWidth: 5,
+                  opacity: 0.5,
+                  transform: [{ rotate: '30deg' }],
                 },
                 wrapper: {
                   flexDirection: 'column',
@@ -103,10 +121,11 @@ export default class SwipeCard extends Component {
               title: 'LIKE',
               style: {
                 label: {
-                  backgroundColor: 'black',
-                  borderColor: 'black',
-                  color: 'white',
-                  borderWidth: 1,
+                  borderColor: '#26ce7e',
+                  color: '#26ce7e',
+                  opacity: 0.5,
+                  borderWidth: 5,
+                  transform: [{ rotate: '-30deg' }],
                 },
                 wrapper: {
                   flexDirection: 'column',
@@ -121,10 +140,11 @@ export default class SwipeCard extends Component {
               title: 'SUPER LIKE',
               style: {
                 label: {
-                  backgroundColor: 'black',
-                  borderColor: 'black',
-                  color: 'white',
-                  borderWidth: 1,
+                  borderColor: '#1f88eb',
+                  color: '#2289eb',
+                  opacity: 0.7,
+                  borderWidth: 5,
+                  transform: [{ rotate: '-30deg' }],
                 },
                 wrapper: {
                   flexDirection: 'column',
@@ -137,9 +157,7 @@ export default class SwipeCard extends Component {
           animateOverlayLabelsOpacity
           animateCardOpacity
           swipeBackCard
-        >
-          <Button onPress={() => this.swiper.swipeBack()} title="Swipe Back" />
-        </Swiper>
+        ></Swiper>
       </View>
     )
   }
@@ -148,25 +166,32 @@ export default class SwipeCard extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    height: '100%',
+    backgroundColor: 'red',
   },
   card: {
-    flex: 1,
-    borderRadius: 4,
-    borderWidth: 2,
-    borderColor: '#E8E8E8',
-    justifyContent: 'center',
-    backgroundColor: 'white',
+    height: Dimensions.get('window').height - 230,
+    borderRadius: 10,
+    backgroundColor: '#DDD',
   },
   text: {
     textAlign: 'center',
     fontSize: 50,
-    backgroundColor: 'transparent',
   },
   done: {
     textAlign: 'center',
     fontSize: 30,
     color: 'white',
     backgroundColor: 'transparent',
+  },
+  imageContainer: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
 })

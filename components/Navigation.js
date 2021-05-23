@@ -69,12 +69,12 @@ const Navigation = ({ state, descriptors, navigation }) => {
                     ? [
                         {
                           color: '#fc9842',
-                          offset: '0',
+                          offset: '1',
                           opacity: '1',
                         },
                         {
                           color: '#fe5f75',
-                          offset: '1',
+                          offset: '0',
                           opacity: '1',
                         },
                       ]

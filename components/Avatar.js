@@ -9,8 +9,8 @@ function Avatar() {
     <View style={styles.avatar}>
       <ImageBackground source={img} style={styles.image} />
       <View style={styles.info}>
-        <Text style={styles.name}>Dương Bảo Nam</Text>
-        <Text style={styles.smallInfo}>Quận 2, Hồ Chí Minh</Text>
+        <Text style={styles.name}>Test Test etst</Text>
+        <Text style={styles.smallInfo}>Quận Thủ Đức, Hồ Chí Minh</Text>
         <Text style={styles.icon}>
           <Icon size={25} type="material" name="verified" color="#0c70ff" />
         </Text>
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginTop: 20,
+    textAlign: 'center',
   },
   smallInfo: {
     marginTop: 5,

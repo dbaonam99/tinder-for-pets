@@ -29,7 +29,7 @@ function ProfileImages() {
 const styles = StyleSheet.create({
   images: {
     marginTop: 70,
-    padding: 20,
+    padding: 8,
     paddingBottom: 0,
     justifyContent: 'center',
     alignItems: 'center',

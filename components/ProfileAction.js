@@ -25,7 +25,7 @@ function ProfileAction({ navigation }) {
       </TouchableOpacity>
       <View style={styles.actionBtn}>
         <LinearGradient
-          colors={['#fc9842', '#fe5f75']}
+          colors={['#fe5f75', '#fc9842']}
           style={styles.mediaIcon}
         >
           <Icon
