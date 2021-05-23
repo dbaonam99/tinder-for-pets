@@ -3,8 +3,6 @@
 .DS_Store
 /tinpet-app/.DS_Store
 
-# Xcode
-#
 /tinpet-app/build/
 /tinpet-app/*.pbxuser
 /tinpet-app/!default.pbxuser
