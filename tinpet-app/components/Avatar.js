@@ -2,15 +2,16 @@ import React from 'react'
 import { ImageBackground, StyleSheet, Text, View } from 'react-native'
 import { Icon } from 'react-native-gradient-icon'
 
-const img = require('../assets/img/dinesh.jpg')
+const defaultImg = require('../assets/img/dinesh.jpg')
 
-function Avatar() {
+function Avatar({ img, data }) {
+  console.log(data)
   return (
     <View style={styles.avatar}>
-      <ImageBackground source={img} style={styles.image} />
+      <ImageBackground source={img || defaultImg} style={styles.image} />
       <View style={styles.info}>
-        <Text style={styles.name}>Test Test etst</Text>
-        <Text style={styles.smallInfo}>Quận Thủ Đức, Hồ Chí Minh</Text>
+        <Text style={styles.name}>{data.username}</Text>
+        <Text style={styles.smallInfo}>{data.address}</Text>
         <Text style={styles.icon}>
           <Icon size={25} type="material" name="verified" color="#0c70ff" />
         </Text>

@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-community/async-storage'
 import * as React from 'react'
 import {
   Button,
@@ -12,6 +13,13 @@ import LinearGradient from 'react-native-linear-gradient'
 const img = require('../assets/img/logo.png')
 
 const Login = ({ navigation }) => {
+  React.useEffect(async () => {
+    const value = await AsyncStorage.getItem('token')
+    if (value) {
+      navigation.navigate('Main')
+    }
+  }, [])
+
   return (
     <View>
       <LinearGradient colors={['#fe5f51', '#fe5f75']} style={styles.login}>
@@ -21,13 +29,13 @@ const Login = ({ navigation }) => {
         </View>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Main')}
+          onPress={() => navigation.navigate('SignUp')}
         >
           <Text style={styles.buttonText}>LẬP TÀI KHOẢN</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button2}
-          onPress={() => navigation.navigate('Main')}
+          onPress={() => navigation.navigate('SignIn')}
         >
           <Text style={styles.buttonText2}>ĐĂNG NHẬP</Text>
         </TouchableOpacity>

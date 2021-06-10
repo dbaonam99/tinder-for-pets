@@ -1,27 +1,14 @@
 import React from 'react'
-import { ImageBackground, StyleSheet, Text, View } from 'react-native'
-import { Icon } from 'react-native-gradient-icon'
+import { ImageBackground, StyleSheet, View } from 'react-native'
 
-const img = require('../assets/img/dinesh.jpg')
-
-function ProfileImages() {
+function ProfileImages({ photos }) {
   return (
     <View style={styles.images}>
-      <View style={styles.imageContainer}>
-        <ImageBackground source={img} style={styles.image} />
-      </View>
-      <View style={styles.imageContainer}>
-        <ImageBackground source={img} style={styles.image} />
-      </View>
-      <View style={styles.imageContainer}>
-        <ImageBackground source={img} style={styles.image} />
-      </View>
-      <View style={styles.imageContainer}>
-        <ImageBackground source={img} style={styles.image} />
-      </View>
-      <View style={styles.imageContainer}>
-        <ImageBackground source={img} style={styles.image} />
-      </View>
+      {photos?.map((item, index) => (
+        <View style={styles.imageContainer} key={index}>
+          <ImageBackground source={item} style={styles.image} />
+        </View>
+      ))}
     </View>
   )
 }

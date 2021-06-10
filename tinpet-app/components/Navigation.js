@@ -9,6 +9,7 @@ const Navigation = ({ state, descriptors, navigation }) => {
     { name: 'star-sharp', type: 'ionicon' },
     { name: 'md-chatbubbles-sharp', type: 'ionicon' },
     { name: 'person', type: 'ionicon' },
+    { name: 'person', type: 'ionicon' },
   ]
   return (
     <View

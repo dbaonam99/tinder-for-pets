@@ -1,15 +1,49 @@
 import React from 'react'
+import AsyncStorage from '@react-native-community/async-storage'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Icon } from 'react-native-gradient-icon'
 import LinearGradient from 'react-native-linear-gradient'
+import ImagePicker from 'react-native-image-crop-picker'
 
-function ProfileAction({ navigation }) {
+function ProfileAction({ onPress }) {
+  const handleOnAddMedia = () => {
+    ImagePicker.openPicker({
+      multiple: true,
+    }).then(async (images) => {
+      const photos = []
+      for (let i in images) {
+        const photo = {
+          uri: images[i].path,
+          type: 'image/jpeg',
+          name: 'photo.jpg',
+        }
+        photos.push(photo)
+      }
+      const token = await AsyncStorage.getItem('token')
+
+      var form = new FormData()
+      form.append('photos', photos)
+      fetch('https://pets-tinder.herokuapp.com/api/user/upload-photos', {
+        method: 'POST',
+        body: form,
+        headers: {
+          Authorization: 'Bearer ' + token,
+          Accept: 'application/json',
+          'Content-Type': 'multipart/form-data;',
+        },
+      })
+        .then(function (response) {
+          console.log(response)
+        })
+        .catch(function (error) {
+          console.log(error.response)
+        })
+    })
+  }
+
   return (
     <View style={styles.action}>
-      <TouchableOpacity
-        style={styles.actionBtn}
-        onPress={() => navigation.navigate('setting')}
-      >
+      <TouchableOpacity style={styles.actionBtn} onPress={() => onPress('1')}>
         <View style={styles.actionIcon}>
           <Icon
             size={29}
@@ -23,7 +57,7 @@ function ProfileAction({ navigation }) {
         </View>
         <Text style={styles.actionText}>Thiết lập</Text>
       </TouchableOpacity>
-      <View style={styles.actionBtn}>
+      <TouchableOpacity style={styles.actionBtn} onPress={handleOnAddMedia}>
         <LinearGradient
           colors={['#fe5f75', '#fc9842']}
           style={styles.mediaIcon}
@@ -39,8 +73,8 @@ function ProfileAction({ navigation }) {
           />
         </LinearGradient>
         <Text style={styles.actionText}>Thêm media</Text>
-      </View>
-      <View style={styles.actionBtn}>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.actionBtn} onPress={() => onPress('3')}>
         <View style={styles.actionIcon}>
           <Icon
             size={29}
@@ -53,7 +87,7 @@ function ProfileAction({ navigation }) {
           />
         </View>
         <Text style={styles.actionText}>sửa thông tin</Text>
-      </View>
+      </TouchableOpacity>
     </View>
   )
 }

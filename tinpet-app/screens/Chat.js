@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, ScrollView, Text } from 'react-native'
+import { StyleSheet, ScrollView, Text } from 'react-native'
 import ChatAvatar from '../components/ChatAvatar'
 import ChatLine from '../components/ChatLine'
 
