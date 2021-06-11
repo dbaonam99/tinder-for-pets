@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, ScrollView, Text } from 'react-native'
-import ChatAvatar from '../components/ChatAvatar'
-import ChatLine from '../components/ChatLine'
+import ChatAvatar from '../app/components/ChatAvatar'
+import ChatLine from '../app/components/ChatLine'
 
 function Chat() {
   return (

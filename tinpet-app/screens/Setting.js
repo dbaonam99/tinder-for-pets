@@ -9,8 +9,7 @@ import {
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 import Slider from '@react-native-community/slider'
 import AsyncStorage from '@react-native-community/async-storage'
-
-const img = require('../assets/img/logo.png')
+import SettingTitle from '../app/components/SettingTitle'
 
 const Setting = ({ navigation }) => {
   const [range, setRange] = useState(0)
@@ -21,16 +20,10 @@ const Setting = ({ navigation }) => {
         marginTop: getStatusBarHeight(),
       }}
     >
-      <View style={styles.titleView}>
-        <Text style={styles.emptyTitle}></Text>
-        <Text style={styles.titleCenter}>Thiết lập</Text>
-        <TouchableOpacity
-          style={{ width: '33.33333%' }}
-          onPress={() => navigation.navigate('Main')}
-        >
-          <Text style={styles.title}>Xong</Text>
-        </TouchableOpacity>
-      </View>
+      <SettingTitle
+        title={'Thiết lập'}
+        onPress={() => navigation.navigate('Main')}
+      />
       <View style={styles.settingView}>
         <Text style={styles.titleSetting}>Thiết lập tài khoản</Text>
         <View style={styles.settingBox}>
@@ -122,30 +115,6 @@ const Setting = ({ navigation }) => {
   )
 }
 const styles = StyleSheet.create({
-  titleView: {
-    height: 50,
-    flexDirection: 'row',
-    paddingHorizontal: 20,
-    borderBottomColor: '#DDD',
-    borderBottomWidth: 1,
-  },
-  emptyTitle: {
-    width: '33.333333%',
-  },
-  title: {
-    textAlign: 'right',
-    lineHeight: 50,
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#fe1c15',
-  },
-  titleCenter: {
-    fontSize: 18,
-    fontWeight: '600',
-    lineHeight: 50,
-    width: '33.333333%',
-    textAlign: 'center',
-  },
   settingView: {
     width: '100%',
     height: '100%',

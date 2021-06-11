@@ -1,44 +1,46 @@
-import React from 'react'
+import React, { useState } from 'react'
 import AsyncStorage from '@react-native-community/async-storage'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import ImagePicker from 'react-native-image-crop-picker'
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ActivityIndicator,
+} from 'react-native'
 import { Icon } from 'react-native-gradient-icon'
 import LinearGradient from 'react-native-linear-gradient'
-import ImagePicker from 'react-native-image-crop-picker'
 
 function ProfileAction({ onPress }) {
-  const handleOnAddMedia = () => {
-    ImagePicker.openPicker({
+  const [loading, setLoading] = useState(false)
+  const handleOnAddMedia = async () => {
+    setLoading(true)
+    const token = await AsyncStorage.getItem('token')
+    const images = await ImagePicker.openPicker({
       multiple: true,
-    }).then(async (images) => {
-      const photos = []
-      for (let i in images) {
-        const photo = {
-          uri: images[i].path,
-          type: 'image/jpeg',
-          name: 'photo.jpg',
-        }
-        photos.push(photo)
-      }
-      const token = await AsyncStorage.getItem('token')
-
-      var form = new FormData()
-      form.append('photos', photos)
-      fetch('https://pets-tinder.herokuapp.com/api/user/upload-photos', {
-        method: 'POST',
-        body: form,
-        headers: {
-          Authorization: 'Bearer ' + token,
-          Accept: 'application/json',
-          'Content-Type': 'multipart/form-data;',
-        },
-      })
-        .then(function (response) {
-          console.log(response)
-        })
-        .catch(function (error) {
-          console.log(error.response)
-        })
     })
+    const data = new FormData()
+    images.forEach((image) => {
+      data.append('photos', {
+        uri: Platform.OS === 'ios' ? `file:///${image.path}` : image.path,
+        type: 'image/jpeg',
+        name: 'image.jpg',
+      })
+    })
+
+    fetch('https://pets-tinder.herokuapp.com/api/user/upload-photos', {
+      method: 'POST',
+      body: data,
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    })
+      .then((response) => response.json())
+      .then(async (res) => {
+        await AsyncStorage.setItem('user', JSON.stringify(res.data))
+        onPress('2')
+        setLoading(false)
+      })
   }
 
   return (
@@ -62,15 +64,19 @@ function ProfileAction({ onPress }) {
           colors={['#fe5f75', '#fc9842']}
           style={styles.mediaIcon}
         >
-          <Icon
-            size={30}
-            type="ionicon"
-            name="camera"
-            color="#fff"
-            style={{
-              alignSelf: 'center',
-            }}
-          />
+          {loading ? (
+            <ActivityIndicator size={35} color="#fff" />
+          ) : (
+            <Icon
+              size={30}
+              type="ionicon"
+              name="camera"
+              color="#fff"
+              style={{
+                alignSelf: 'center',
+              }}
+            />
+          )}
         </LinearGradient>
         <Text style={styles.actionText}>Thêm media</Text>
       </TouchableOpacity>
@@ -93,6 +99,9 @@ function ProfileAction({ onPress }) {
 }
 
 const styles = StyleSheet.create({
+  loading: {
+    marginTop: 5,
+  },
   action: {
     width: '100%',
     flexDirection: 'row',

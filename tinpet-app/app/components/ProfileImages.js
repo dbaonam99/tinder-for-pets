@@ -6,7 +6,7 @@ function ProfileImages({ photos }) {
     <View style={styles.images}>
       {photos?.map((item, index) => (
         <View style={styles.imageContainer} key={index}>
-          <ImageBackground source={item} style={styles.image} />
+          <ImageBackground source={{ uri: item }} style={styles.image} />
         </View>
       ))}
     </View>

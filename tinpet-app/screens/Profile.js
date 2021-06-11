@@ -1,20 +1,25 @@
 import AsyncStorage from '@react-native-community/async-storage'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
-import Avatar from '../components/Avatar'
-import ProfileAction from '../components/ProfileAction'
-import ProfileImages from '../components/ProfileImages'
+import Avatar from '../app/components/Avatar'
+import ProfileAction from '../app/components/ProfileAction'
+import ProfileImages from '../app/components/ProfileImages'
+import { ChangeDataContext } from '../app/contexts/ChangeData'
 
 function Profile({ navigation }) {
-  const [data, setData] = useState([])
+  const [data, setData] = useState({})
+  const { isChanged, setIsChanged } = useContext(ChangeDataContext)
   useEffect(async () => {
     const value = await AsyncStorage.getItem('user')
     setData(JSON.parse(value))
-  }, [])
+  }, [isChanged])
 
   const handleOnPress = (type) => {
     if (type === '1') {
       navigation.navigate('Setting')
+    }
+    if (type === '2') {
+      setIsChanged()
     }
     if (type === '3') {
       navigation.navigate('SettingInfo')
@@ -24,9 +29,9 @@ function Profile({ navigation }) {
   return (
     <View style={styles.container} onPress={() => {}}>
       <ScrollView>
-        <Avatar img={''} data={data} />
+        <Avatar data={data && data} />
         <ProfileAction onPress={(type) => handleOnPress(type)} />
-        <ProfileImages photos={data.photos} />
+        <ProfileImages photos={data?.photos} />
       </ScrollView>
     </View>
   )

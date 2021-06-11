@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import MatchingAction from '../components/MatchingAction'
-import SwipeCard from '../components/SwipeCard'
+import MatchingAction from '../app/components/MatchingAction'
+import SwipeCard from '../app/components/SwipeCard'
 
 function Matching({ navigation }) {
   return (

@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import ImagePicker from 'react-native-image-crop-picker'
+import AsyncStorage from '@react-native-community/async-storage'
 import { Icon } from 'react-native-gradient-icon'
 import {
   Text,
@@ -8,13 +10,67 @@ import {
   TouchableOpacity,
   TextInput,
   ImageBackground,
+  ActivityIndicator,
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
+import SettingTitle from '../app/components/SettingTitle'
+import { ChangeDataContext } from '../app/contexts/ChangeData'
 
-const img = require('../assets/img/logo.png')
+const img = require('../../assets/img/logo.png')
 
 const SettingInfo = ({ navigation }) => {
+  const { isChanged, setIsChanged } = useContext(ChangeDataContext)
+  const [data, setData] = useState({})
+  const [photos, setPhotos] = useState([])
+  const [loading, setLoading] = useState()
+
+  useEffect(async () => {
+    const value = await AsyncStorage.getItem('user')
+    const photos = JSON.parse(value).photos
+    if (photos.length < 9) {
+      const missing = 9 - photos.length
+      for (let i = 0; i < missing; i++) {
+        photos.push('')
+      }
+    }
+    setPhotos(photos)
+    setData(JSON.parse(value))
+  }, [isChanged])
+
+  const handleOnAddMedia = async (item, index) => {
+    if (item) {
+      console.log(item)
+    } else {
+      const token = await AsyncStorage.getItem('token')
+      const images = await ImagePicker.openPicker({
+        multiple: true,
+      })
+      const data = new FormData()
+      images.forEach((image) => {
+        data.append('photos', {
+          uri: Platform.OS === 'ios' ? `file:///${image.path}` : image.path,
+          type: 'image/jpeg',
+          name: 'image.jpg',
+        })
+      })
+      setLoading(index)
+      fetch('https://pets-tinder.herokuapp.com/api/user/upload-photos', {
+        method: 'POST',
+        body: data,
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      })
+        .then((response) => response.json())
+        .then(async (res) => {
+          await AsyncStorage.setItem('user', JSON.stringify(res.data))
+          setLoading(null)
+          setIsChanged()
+        })
+    }
+  }
+
   return (
     <ScrollView
       style={{
@@ -22,140 +78,46 @@ const SettingInfo = ({ navigation }) => {
         marginTop: getStatusBarHeight(),
       }}
     >
-      <View style={styles.titleView}>
-        <Text style={styles.emptyTitle}></Text>
-        <Text style={styles.titleCenter}>Sửa thông tin</Text>
-        <TouchableOpacity
-          style={{ width: '33.33333%' }}
-          onPress={() => navigation.navigate('Main')}
-        >
-          <Text style={styles.title}>Xong</Text>
-        </TouchableOpacity>
-      </View>
+      <SettingTitle
+        title={'Sửa thông tin'}
+        onPress={() => navigation.navigate('Main')}
+      />
       <View style={styles.imageGrid}>
-        <View style={styles.imageItem}>
-          <ImageBackground source={img} style={styles.image} />
-          <TouchableOpacity style={styles.button}>
-            <Icon
-              size={20}
-              type="material"
-              style={styles.icon}
-              name="remove"
-              color="#fe1c15"
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.imageItem}>
-          <ImageBackground source={img} style={styles.image} />
-          <TouchableOpacity style={styles.button}>
-            <Icon
-              size={20}
-              type="material"
-              style={styles.icon}
-              name="remove"
-              color="#fe1c15"
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.imageItem}>
-          <ImageBackground source={img} style={styles.image} />
-          <TouchableOpacity style={styles.button}>
-            <Icon
-              size={20}
-              type="material"
-              style={styles.icon}
-              name="remove"
-              color="#fe1c15"
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.imageItem}>
-          <ImageBackground source={img} style={styles.image} />
-          <TouchableOpacity style={styles.button}>
-            <Icon
-              size={20}
-              type="material"
-              style={styles.icon}
-              name="remove"
-              color="#fe1c15"
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.imageItem}>
-          <ImageBackground source={img} style={styles.image} />
-          <LinearGradient
-            colors={['#fe5f75', '#fc9842']}
-            style={styles.buttonRemove}
-          >
-            <Icon
-              size={20}
-              type="material"
-              style={styles.icon}
-              name="add"
-              color="#fff"
-            />
-          </LinearGradient>
-        </View>
-        <View style={styles.imageItem}>
-          <ImageBackground source={img} style={styles.image} />
-          <LinearGradient
-            colors={['#fe5f75', '#fc9842']}
-            style={styles.buttonRemove}
-          >
-            <Icon
-              size={20}
-              type="material"
-              style={styles.icon}
-              name="add"
-              color="#fff"
-            />
-          </LinearGradient>
-        </View>
-        <View style={styles.imageItem}>
-          <ImageBackground source={img} style={styles.image} />
-          <LinearGradient
-            colors={['#fe5f75', '#fc9842']}
-            style={styles.buttonRemove}
-          >
-            <Icon
-              size={20}
-              type="material"
-              style={styles.icon}
-              name="add"
-              color="#fff"
-            />
-          </LinearGradient>
-        </View>
-        <View style={styles.imageItem}>
-          <ImageBackground source={img} style={styles.image} />
-          <LinearGradient
-            colors={['#fe5f75', '#fc9842']}
-            style={styles.buttonRemove}
-          >
-            <Icon
-              size={20}
-              type="material"
-              style={styles.icon}
-              name="add"
-              color="#fff"
-            />
-          </LinearGradient>
-        </View>
-        <View style={styles.imageItem}>
-          <ImageBackground source={img} style={styles.image} />
-          <LinearGradient
-            colors={['#fe5f75', '#fc9842']}
-            style={styles.buttonRemove}
-          >
-            <Icon
-              size={20}
-              type="material"
-              style={styles.icon}
-              name="add"
-              color="#fff"
-            />
-          </LinearGradient>
-        </View>
+        {photos?.map((item, index) => {
+          return (
+            <View style={styles.imageItem} key={index}>
+              <ImageBackground
+                source={{
+                  uri: item
+                    ? item
+                    : 'https://upload.wikimedia.org/wikipedia/commons/5/59/Empty.png',
+                }}
+                style={styles.image}
+              />
+              {loading === index && (
+                <ActivityIndicator
+                  size={35}
+                  color="#fff"
+                  style={styles.loading}
+                />
+              )}
+              <TouchableOpacity onPress={() => handleOnAddMedia(item, index)}>
+                <LinearGradient
+                  colors={item ? ['#FFF', '#FFF'] : ['#fe5f75', '#fc9842']}
+                  style={item ? styles.button : styles.buttonRemove}
+                >
+                  <Icon
+                    size={20}
+                    type="material"
+                    style={styles.icon}
+                    name={item ? 'remove' : 'add'}
+                    color={item ? '#fe1c15' : '#fff'}
+                  />
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+          )
+        })}
       </View>
       <View style={styles.settingView}>
         <Text style={styles.titleSetting}>TÊN HIỂN THỊ</Text>
@@ -215,29 +177,40 @@ const SettingInfo = ({ navigation }) => {
   )
 }
 const styles = StyleSheet.create({
+  loading: {
+    width: '100%',
+    height: '100%',
+  },
   imageGrid: {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
     width: '100%',
     paddingHorizontal: 15,
-    paddingVertical: 10,
     backgroundColor: '#efedf3',
+    paddingVertical: 15,
   },
   imageItem: {
-    width: '30.55%',
-    height: 150,
+    width: '28.8%',
+    height: 140,
     backgroundColor: '#DDDCE5',
-    marginHorizontal: 5,
-    marginVertical: 5,
+    marginHorizontal: 8,
+    marginVertical: 8,
     borderRadius: 10,
     position: 'relative',
   },
-  image: {},
+  image: {
+    flex: 1,
+    width: null,
+    height: null,
+    borderRadius: 10,
+    overflow: 'hidden',
+    resizeMode: 'contain',
+  },
   button: {
     position: 'absolute',
-    bottom: -5,
-    right: -5,
+    bottom: -10,
+    right: -10,
     backgroundColor: 'red',
     display: 'flex',
     justifyContent: 'center',
@@ -246,11 +219,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     width: 28,
     height: 28,
+    zIndex: 999,
   },
   buttonRemove: {
     position: 'absolute',
-    bottom: -5,
-    right: -5,
+    bottom: -10,
+    right: -10,
     backgroundColor: 'red',
     display: 'flex',
     justifyContent: 'center',
@@ -262,30 +236,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginLeft: 4,
-  },
-  titleView: {
-    height: 50,
-    flexDirection: 'row',
-    paddingHorizontal: 20,
-    borderBottomColor: '#DDD',
-    borderBottomWidth: 1,
-  },
-  emptyTitle: {
-    width: '33.333333%',
-  },
-  title: {
-    textAlign: 'right',
-    lineHeight: 50,
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#fe1c15',
-  },
-  titleCenter: {
-    fontSize: 18,
-    fontWeight: '600',
-    lineHeight: 50,
-    width: '33.333333%',
-    textAlign: 'center',
   },
   settingView: {
     width: '100%',

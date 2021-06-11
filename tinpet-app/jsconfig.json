@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "baseUrl": ".",
+    "paths": {
+      "components/*": ["./app/components/*"],
+      "screens/*": ["./screens/*"],
+      "contexts/*": ["./app/contexts/*"]
+    }
+  }
+}

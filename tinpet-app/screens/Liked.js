@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, ScrollView, Text } from 'react-native'
-import LikedAvatar from '../components/LikedAvatar'
+import LikedAvatar from '../app/components/LikedAvatar'
 
 const data = [
   {

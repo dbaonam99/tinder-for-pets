@@ -1,7 +1,7 @@
 import React from 'react'
 import { ImageBackground, StyleSheet, View, Dimensions } from 'react-native'
 
-const img = require('../assets/img/dinesh.jpg')
+const img = require('../../assets/img/dinesh.jpg')
 
 function LikedAvatar({ margin }) {
   return (

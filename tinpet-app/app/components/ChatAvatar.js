@@ -1,7 +1,7 @@
 import React from 'react'
 import { ImageBackground, StyleSheet, View, Text } from 'react-native'
 
-const img = require('../assets/img/dinesh.jpg')
+const img = require('../../assets/img/dinesh.jpg')
 
 function ChatAvatar({ name }) {
   return (
