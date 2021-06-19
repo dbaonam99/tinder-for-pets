@@ -1,49 +1,126 @@
 import AsyncStorage from '@react-native-community/async-storage'
-import * as React from 'react'
+import React, { useState, useEffect } from 'react'
 import {
-  Button,
   View,
   Text,
   StyleSheet,
   ImageBackground,
   TouchableOpacity,
+  Image,
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
+import AppIntroSlider from 'react-native-app-intro-slider'
+
+const slides = [
+  {
+    key: 'one',
+    title: 'Chú mèo của bạn đang cô đơn?',
+    text: 'Hãy tìm cho nó một bạn tình',
+    image: require('../assets/img/intro2.jpg'),
+  },
+  {
+    key: 'two',
+    title: 'Tìm đối tượng thích hợp cho thú cưng của bạn',
+    text: 'Rất nhiều những chú cún dễ thương',
+    image: require('../assets/img/intro1.jpg'),
+  },
+  {
+    key: 'three',
+    title: 'Giúp thú cưng sinh ra những đứa con dễ thương',
+    text: 'Match ngay, chần chừ gì nữa!',
+    image: require('../assets/img/intro3.jpg'),
+  },
+]
 
 const img = require('../assets/img/logo.png')
 
 const Login = ({ navigation }) => {
-  React.useEffect(async () => {
+  const [showRealApp, setShowRealApp] = useState(false)
+
+  useEffect(async () => {
     const value = await AsyncStorage.getItem('token')
     if (value) {
       navigation.navigate('Main')
     }
   }, [])
 
-  return (
-    <View>
-      <LinearGradient colors={['#fe5f51', '#fe5f75']} style={styles.login}>
-        <View style={styles.logo}>
-          <ImageBackground source={img} style={styles.image} />
-          <Text style={styles.logoText}>tinpet</Text>
-        </View>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('SignUp')}
-        >
-          <Text style={styles.buttonText}>LẬP TÀI KHOẢN</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button2}
-          onPress={() => navigation.navigate('SignIn')}
-        >
-          <Text style={styles.buttonText2}>ĐĂNG NHẬP</Text>
-        </TouchableOpacity>
+  const _renderItem = ({ item }) => {
+    return (
+      <LinearGradient colors={['#fe5f51', '#fe5f75']} style={styles.slide}>
+        <Text style={styles.title}>{item.title}</Text>
+        <Image source={item.image} style={styles.imageIntro} />
+        <Text style={styles.text}>{item.text}</Text>
       </LinearGradient>
-    </View>
-  )
+    )
+  }
+
+  const _onDone = () => {
+    setShowRealApp(true)
+  }
+
+  const _renderNextButton = () => {
+    return (
+      <View style={styles.nextTextBox}>
+        <Text style={styles.nextText}>Tiếp theo</Text>
+      </View>
+    )
+  }
+
+  const _renderDoneButton = () => {
+    return (
+      <View style={styles.nextTextBox}>
+        <Text style={styles.nextText}>Xong</Text>
+      </View>
+    )
+  }
+
+  if (showRealApp) {
+    return (
+      <View>
+        <LinearGradient colors={['#fe5f51', '#fe5f75']} style={styles.login}>
+          <View style={styles.logo}>
+            <ImageBackground source={img} style={styles.image} />
+            <Text style={styles.logoText}>tinpet</Text>
+          </View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate('SignUp')}
+          >
+            <Text style={styles.buttonText}>LẬP TÀI KHOẢN</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button2}
+            onPress={() => navigation.navigate('SignIn')}
+          >
+            <Text style={styles.buttonText2}>ĐĂNG NHẬP</Text>
+          </TouchableOpacity>
+        </LinearGradient>
+      </View>
+    )
+  } else {
+    return (
+      <AppIntroSlider
+        renderItem={_renderItem}
+        data={slides}
+        onDone={_onDone}
+        renderDoneButton={_renderDoneButton}
+        renderNextButton={_renderNextButton}
+      />
+    )
+  }
 }
 const styles = StyleSheet.create({
+  nextTextBox: {
+    height: 50,
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+  nextText: {
+    fontSize: 18,
+    color: '#FFF',
+    fontWeight: '600',
+  },
   login: {
     height: '100%',
     justifyContent: 'flex-end',
@@ -95,6 +172,30 @@ const styles = StyleSheet.create({
   buttonText2: {
     fontWeight: '500',
     color: '#fff',
+  },
+
+  slide: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'blue',
+  },
+  imageIntro: {
+    width: '90%',
+    height: 500,
+    marginVertical: 32,
+    borderRadius: 20,
+  },
+  text: {
+    color: 'rgba(255, 255, 255, 0.9)',
+    textAlign: 'center',
+  },
+  title: {
+    width: '80%',
+    fontSize: 24,
+    fontWeight: '600',
+    color: 'white',
+    textAlign: 'center',
   },
 })
 export default Login

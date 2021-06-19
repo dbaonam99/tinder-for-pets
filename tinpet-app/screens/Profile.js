@@ -9,6 +9,7 @@ import { ChangeDataContext } from '../app/contexts/ChangeData'
 function Profile({ navigation }) {
   const [data, setData] = useState({})
   const { isChanged, setIsChanged } = useContext(ChangeDataContext)
+
   useEffect(async () => {
     const value = await AsyncStorage.getItem('user')
     setData(JSON.parse(value))
