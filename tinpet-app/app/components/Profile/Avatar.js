@@ -10,9 +10,9 @@ import {
 } from 'react-native'
 import { Icon } from 'react-native-gradient-icon'
 import ImagePicker from 'react-native-image-crop-picker'
-import { ChangeDataContext } from '../contexts/ChangeData'
+import { ChangeDataContext } from '../../contexts/ChangeData'
 
-const defaultImg = require('../../assets/img/dinesh.jpg')
+const defaultImg = require('../../../assets/img/dinesh.jpg')
 
 function Avatar({ data }) {
   const [loading, setLoading] = useState(false)
@@ -56,7 +56,7 @@ function Avatar({ data }) {
         />
       </TouchableOpacity>
       <View style={styles.info}>
-        <Text style={styles.name}>{data?.username}</Text>
+        <Text style={styles.name}>{data.full_name || data.username}</Text>
         <Text style={styles.smallInfo}>{data?.address}</Text>
         <Text style={styles.icon}>
           <Icon size={25} type="material" name="verified" color="#0c70ff" />

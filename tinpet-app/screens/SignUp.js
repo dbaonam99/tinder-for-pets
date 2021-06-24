@@ -9,16 +9,19 @@ import {
 } from 'react-native'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 import LinearGradient from 'react-native-linear-gradient'
+import AsyncStorage from '@react-native-community/async-storage'
 
 const img = require('../assets/img/logo.png')
 
 const Login = ({ navigation }) => {
   const [userName, setUserName] = React.useState('')
   const [password, setPassword] = React.useState('')
+  const [fullName, setFullName] = React.useState('')
   const [status, setStatus] = React.useState([])
   const [confirmPassword, setConfirmPassword] = React.useState('')
 
   const handleOnPress = async () => {
+    const location = await AsyncStorage.setItem('location', res.token)
     fetch('https://pets-tinder.herokuapp.com/api/user/signup', {
       method: 'POST',
       headers: {
@@ -26,9 +29,11 @@ const Login = ({ navigation }) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        full_name: fullName,
         username: userName,
         password: password,
         confirmPassword: confirmPassword,
+        address: location,
       }),
     })
       .then((response) => response.json())
@@ -42,6 +47,10 @@ const Login = ({ navigation }) => {
           setStatus([res.message, false])
         }
       })
+  }
+
+  const handleOnChangeFullName = (value) => {
+    setFullName(value)
   }
 
   const handleOnChangeUserName = (value) => {
@@ -84,6 +93,15 @@ const Login = ({ navigation }) => {
         <TextInput
           style={styles.input}
           underlineColorAndroid="transparent"
+          placeholder="Tên hiển thị"
+          placeholderTextColor="#666"
+          autoCapitalize="none"
+          value={fullName}
+          onChangeText={(value) => handleOnChangeFullName(value)}
+        />
+        <TextInput
+          style={styles.input}
+          underlineColorAndroid="transparent"
           placeholder="Mật khẩu"
           placeholderTextColor="#666"
           autoCapitalize="none"
@@ -111,7 +129,7 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 30,
     position: 'absolute',
-    bottom: 180,
+    bottom: 130,
     borderRadius: 50,
   },
   error: {

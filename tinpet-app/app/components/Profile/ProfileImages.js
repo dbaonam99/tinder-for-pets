@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     maxHeight: 400,
     borderRadius: 10,
     overflow: 'hidden',
-    marginBottom: 20,
+    marginBottom: 10,
   },
   image: {
     width: '100%',

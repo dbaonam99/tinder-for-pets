@@ -1,16 +1,25 @@
 import React from 'react'
-import { ImageBackground, StyleSheet, View, Text } from 'react-native'
+import {
+  ImageBackground,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+} from 'react-native'
 
-const img = require('../../assets/img/dinesh.jpg')
+const img = require('../../../assets/img/dinesh.jpg')
 
-function ChatAvatar({ name }) {
+function ChatAvatar({ name, avatar, onPress }) {
   return (
-    <View style={styles.avatar}>
-      <ImageBackground source={img} style={styles.image} />
+    <TouchableOpacity style={styles.avatar} onPress={onPress}>
+      <ImageBackground
+        source={avatar ? { uri: avatar } : img}
+        style={styles.image}
+      />
       <View style={styles.info}>
         <Text style={styles.name}>{name}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 

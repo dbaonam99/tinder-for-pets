@@ -9,7 +9,7 @@ import {
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 import Slider from '@react-native-community/slider'
 import AsyncStorage from '@react-native-community/async-storage'
-import SettingTitle from '../app/components/SettingTitle'
+import SettingTitle from '../app/components/Profile/SettingTitle'
 import { ChangeDataContext } from '../app/contexts/ChangeData'
 import RNPickerSelect from 'react-native-picker-select'
 
@@ -43,6 +43,7 @@ const pickerStyle = {
 
 const Setting = ({ navigation }) => {
   const { isChanged, setIsChanged } = useContext(ChangeDataContext)
+  const [isEdited, setIsEdited] = useState(false)
   const [area, setArea] = useState(0)
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
@@ -58,12 +59,12 @@ const Setting = ({ navigation }) => {
   }, [isChanged])
 
   const handleOnPress = async () => {
-    // navigation.navigate('Main')
+    navigation.navigate('Main')
     const token = await AsyncStorage.getItem('token')
     const data = {
       phone,
       email,
-      range,
+      area,
       gender,
     }
     fetch('https://pets-tinder.herokuapp.com/api/user/update', {
@@ -78,7 +79,6 @@ const Setting = ({ navigation }) => {
       .then(async (res) => {
         if (res.status === 1) {
           await AsyncStorage.setItem('user', JSON.stringify(res.data))
-          // navigation.navigate('Main')
           setIsChanged(!isChanged)
         } else {
           setStatus(res.message)
@@ -105,7 +105,9 @@ const Setting = ({ navigation }) => {
               placeholder="Nhập số điện thoại"
               placeholderTextColor="#666"
               autoCapitalize="none"
-              onChangeText={(value) => setPhone(value)}
+              onChangeText={(value) => {
+                setPhone(value)
+              }}
               value={phone}
             />
           </View>
@@ -118,7 +120,9 @@ const Setting = ({ navigation }) => {
               placeholderTextColor="#666"
               autoCapitalize="none"
               name="email"
-              onChangeText={(event) => setEmail(event)}
+              onChangeText={(event) => {
+                setEmail(event)
+              }}
               value={email}
             />
           </View>
@@ -137,14 +141,19 @@ const Setting = ({ navigation }) => {
               maximumValue={100}
               minimumTrackTintColor="#fe1c15"
               maximumTrackTintColor="#ddd"
-              onValueChange={(value) => setArea(value)}
+              onValueChange={(value) => {
+                setArea(value)
+              }}
+              value={area}
             />
           </View>
           <View style={styles.settingItem}>
             <Text style={styles.itemText}>Giới tính hiển thị</Text>
             <RNPickerSelect
               style={pickerStyle}
-              onValueChange={(value) => setGender(value)}
+              onValueChange={(value) => {
+                setGender(value)
+              }}
               value={gender}
               items={[
                 { label: 'Loài đực', value: 1 },

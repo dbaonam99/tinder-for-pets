@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { ChangeDataProvider } from './app/contexts/ChangeData'
+import AsyncStorage from '@react-native-community/async-storage'
+import Geolocation from '@react-native-community/geolocation'
+import SplashScreen from 'react-native-splash-screen'
 import Matching from './screens/Matching'
 import Navigation from './app/components/Navigation'
 import Profile from './screens/Profile'
@@ -12,7 +16,7 @@ import Setting from './screens/Setting'
 import SettingInfo from './screens/SettingInfo'
 import SignUp from './screens/SignUp'
 import SignIn from './screens/SignIn'
-import { ChangeDataProvider } from './app/contexts/ChangeData'
+import ChatBox from './screens/ChatBox'
 
 const Stack = createStackNavigator()
 const Tab = createMaterialTopTabNavigator()
@@ -32,6 +36,31 @@ const Main = () => {
 }
 
 const App = () => {
+  useEffect(() => {
+    SplashScreen.hide()
+  }, [])
+
+  Geolocation.getCurrentPosition(async (info) => {
+    fetch(
+      `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${info.coords.latitude}&lon=${info.coords.longitude}`,
+      {
+        method: 'GET',
+      }
+    )
+      .then((response) => response.json())
+      .then(async (res) => {
+        await AsyncStorage.setItem(
+          'location',
+          JSON.stringify({
+            city: res.address.city,
+            state: res.address.state,
+            county: res.address.county,
+            country: res.address.country,
+          })
+        )
+      })
+  })
+
   return (
     <ChangeDataProvider>
       <NavigationContainer>
@@ -70,6 +99,11 @@ const App = () => {
           <Stack.Screen
             name="SignIn"
             component={SignIn}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ChatBox"
+            component={ChatBox}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

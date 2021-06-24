@@ -1,35 +1,19 @@
-import React from 'react'
+import AsyncStorage from '@react-native-community/async-storage'
+import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, View, ScrollView, Text } from 'react-native'
-import LikedAvatar from '../app/components/LikedAvatar'
-
-const data = [
-  {
-    id: '1',
-  },
-  {
-    id: '2',
-  },
-  {
-    id: '3',
-  },
-  {
-    id: '4',
-  },
-  {
-    id: '5',
-  },
-  {
-    id: '6',
-  },
-  {
-    id: '7',
-  },
-  {
-    id: '8',
-  },
-]
+import LikedAvatar from '../app/components/Liked/LikedAvatar'
+import { ChangeDataContext } from '../app/contexts/ChangeData'
 
 function Liked() {
+  const [data, setData] = useState([])
+  const { isChanged } = useContext(ChangeDataContext)
+
+  useEffect(async () => {
+    const value = await AsyncStorage.getItem('user')
+    const matched_list = JSON.parse(value).matched_list
+    setData(matched_list)
+  }, [isChanged])
+
   return (
     <ScrollView
       style={styles.liked}
@@ -37,7 +21,7 @@ function Liked() {
       showsHorizontalScrollIndicator={false}
     >
       <View style={styles.likedCount}>
-        <Text style={styles.likedCountText}>9 lượt thích</Text>
+        <Text style={styles.likedCountText}>{data.length} lượt thích</Text>
       </View>
       <View style={styles.likedListTitle}>
         <Text style={styles.likedListTitleText}>
@@ -45,8 +29,14 @@ function Liked() {
         </Text>
       </View>
       <View style={styles.likedList} showsVerticalScrollIndicator={false}>
-        {data.map((item, index) => {
-          return <LikedAvatar key={item.id} margin={index % 2 === 0 && true} />
+        {data?.map((item, index) => {
+          return (
+            <LikedAvatar
+              margin={index % 2 === 0 && true}
+              key={index}
+              avatar={item.avatar}
+            />
+          )
         })}
       </View>
     </ScrollView>

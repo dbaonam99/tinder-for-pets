@@ -1,9 +1,9 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
-import Avatar from '../app/components/Avatar'
-import ProfileAction from '../app/components/ProfileAction'
-import ProfileImages from '../app/components/ProfileImages'
+import Avatar from '../app/components/Profile/Avatar'
+import ProfileAction from '../app/components/Profile/ProfileAction'
+import ProfileImages from '../app/components/Profile/ProfileImages'
 import { ChangeDataContext } from '../app/contexts/ChangeData'
 
 function Profile({ navigation }) {

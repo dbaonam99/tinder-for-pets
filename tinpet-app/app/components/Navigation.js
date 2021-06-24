@@ -1,16 +1,28 @@
-import React from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
+import { Text, TouchableOpacity, View, StyleSheet } from 'react-native'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
+import { ChangeDataContext } from '../../app/contexts/ChangeData'
 import { Icon } from 'react-native-gradient-icon'
+import AsyncStorage from '@react-native-community/async-storage'
 
-const Navigation = ({ state, descriptors, navigation }) => {
-  const icons = [
-    { name: 'flame', type: 'ionicon' },
-    { name: 'star-sharp', type: 'ionicon' },
-    { name: 'md-chatbubbles-sharp', type: 'ionicon' },
-    { name: 'person', type: 'ionicon' },
-    { name: 'person', type: 'ionicon' },
-  ]
+const icons = [
+  { name: 'flame', type: 'ionicon' },
+  { name: 'star-sharp', type: 'ionicon' },
+  { name: 'md-chatbubbles-sharp', type: 'ionicon' },
+  { name: 'person', type: 'ionicon' },
+  { name: 'person', type: 'ionicon' },
+]
+
+const Navigation = ({ state, navigation }) => {
+  const [likedLength, setLikedLength] = useState([])
+  const { isChanged } = useContext(ChangeDataContext)
+
+  useEffect(async () => {
+    const value = await AsyncStorage.getItem('user')
+    const matched_list = JSON.parse(value).matched_list
+    setLikedLength(matched_list.length)
+  }, [isChanged])
+
   return (
     <View
       style={{
@@ -23,16 +35,8 @@ const Navigation = ({ state, descriptors, navigation }) => {
       }}
     >
       {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key]
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-            ? options.title
-            : route.name
         const name = icons[index].name
         const type = icons[index].type
-
         const isFocused = state.index === index
 
         const onPress = () => {
@@ -40,7 +44,6 @@ const Navigation = ({ state, descriptors, navigation }) => {
             type: 'tabPress',
             target: route.key,
           })
-
           if (!isFocused && !event.defaultPrevented) {
             navigation.navigate(route.name)
           }
@@ -82,6 +85,9 @@ const Navigation = ({ state, descriptors, navigation }) => {
                     : [{ color: '#a5a5a5', offset: '1', opacity: '1' }]
                 }
               />
+              {index === 1 && (
+                <Text style={styles.likedLength}>{likedLength}</Text>
+              )}
             </View>
           </TouchableOpacity>
         )
@@ -89,5 +95,22 @@ const Navigation = ({ state, descriptors, navigation }) => {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  likedLength: {
+    backgroundColor: '#f0c16c',
+    position: 'absolute',
+    top: -11,
+    right: -9,
+    width: 20,
+    height: 20,
+    color: '#FFF',
+    textAlign: 'center',
+    lineHeight: 20,
+    borderRadius: 10,
+    fontWeight: 'bold',
+    overflow: 'hidden',
+  },
+})
 
 export default Navigation

@@ -1,9 +1,9 @@
 import React from 'react'
 import { ImageBackground, StyleSheet, View, Dimensions } from 'react-native'
 
-const img = require('../../assets/img/dinesh.jpg')
+const img = require('../../../assets/img/dinesh.jpg')
 
-function LikedAvatar({ margin }) {
+function LikedAvatar({ margin, avatar }) {
   return (
     <View
       style={{
@@ -11,7 +11,11 @@ function LikedAvatar({ margin }) {
         marginRight: margin ? 8 : 0,
       }}
     >
-      <ImageBackground source={img} style={styles.image} blurRadius={20} />
+      <ImageBackground
+        source={avatar ? { uri: avatar } : img}
+        style={styles.image}
+        blurRadius={20}
+      />
     </View>
   )
 }
