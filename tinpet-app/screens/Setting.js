@@ -12,6 +12,8 @@ import AsyncStorage from '@react-native-community/async-storage'
 import SettingTitle from '../app/components/Profile/SettingTitle'
 import { ChangeDataContext } from '../app/contexts/ChangeData'
 import RNPickerSelect from 'react-native-picker-select'
+import { Icon } from 'react-native-gradient-icon'
+import LinearGradient from 'react-native-linear-gradient'
 
 const pickerStyle = {
   inputIOS: {
@@ -43,7 +45,6 @@ const pickerStyle = {
 
 const Setting = ({ navigation }) => {
   const { isChanged, setIsChanged } = useContext(ChangeDataContext)
-  const [isEdited, setIsEdited] = useState(false)
   const [area, setArea] = useState(0)
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
@@ -95,6 +96,41 @@ const Setting = ({ navigation }) => {
     >
       <SettingTitle title={'Thiết lập'} onPress={handleOnPress} />
       <View style={styles.settingView}>
+        <View style={styles.vip}>
+          <TouchableOpacity
+            style={styles.vipBox}
+            onPress={() => navigation.navigate('Checkout')}
+          >
+            <Icon
+              size={26}
+              type={'ionicon'}
+              name={'flame'}
+              style={styles.icon}
+              colors={[
+                {
+                  color: '#fc9842',
+                  offset: '1',
+                  opacity: '1',
+                },
+                {
+                  color: '#fe5f75',
+                  offset: '0',
+                  opacity: '1',
+                },
+              ]}
+            />
+            <Text style={styles.logoText}>tinpet</Text>
+            <LinearGradient
+              style={styles.vipIcon}
+              colors={['#fe5f75', '#fc9842']}
+            >
+              <Text style={styles.vipIconText}>vip</Text>
+            </LinearGradient>
+            <Text style={styles.vipText}>
+              Xem ai Thích bạn & nhiều thứ khác
+            </Text>
+          </TouchableOpacity>
+        </View>
         <Text style={styles.titleSetting}>Thiết lập tài khoản</Text>
         <View style={styles.settingBox}>
           <View style={styles.settingItemBorder}>
@@ -171,7 +207,6 @@ const Setting = ({ navigation }) => {
             <Text style={styles.itemText}>Giấy phép</Text>
           </View>
         </View>
-        <Text style={styles.titleSetting}></Text>
         <TouchableOpacity
           style={styles.settingBox}
           onPress={async () => {
@@ -202,6 +237,59 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: '#efedf3',
+  },
+  vip: {
+    width: '100%',
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
+  vipBox: {
+    backgroundColor: '#FFF',
+    justifyContent: 'center',
+    alignContent: 'center',
+    flexDirection: 'row',
+    padding: 20,
+    borderRadius: 10,
+    overflow: 'hidden',
+    flexWrap: 'wrap',
+  },
+  icon: {
+    marginTop: 5,
+  },
+  vipIcon: {
+    width: 35,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'red',
+    marginLeft: 10,
+    borderRadius: 5,
+    overflow: 'hidden',
+    marginTop: 10,
+  },
+  vipIconText: {
+    color: '#FFF',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+  },
+  logoText: {
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+  vipText: {
+    color: '#999',
+    fontWeight: 'bold',
+    marginTop: 5,
+    width: '100%',
+    textAlign: 'center',
   },
   titleSetting: {
     fontSize: 15,
