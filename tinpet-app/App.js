@@ -67,7 +67,6 @@ const App = () => {
         <Stack.Navigator
           initialRouteName="Login"
           screenOptions={{
-            gestureEnabled: false,
             headerStyle: { elevation: 0 },
             cardStyle: { backgroundColor: '#FFF' },
           }}
@@ -80,7 +79,7 @@ const App = () => {
           <Stack.Screen
             name="Main"
             component={Main}
-            options={{ headerShown: false }}
+            options={{ headerShown: false, gestureEnabled: false }}
           />
           <Stack.Screen
             name="Setting"

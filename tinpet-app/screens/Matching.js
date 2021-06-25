@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
 import { StyleSheet, View } from 'react-native'
 import MatchingAction from '../app/components/Matching/MatchingAction'
 import SwipeCard from '../app/components/Matching/SwipeCard'
@@ -10,10 +10,11 @@ const ENDPOINT = 'https://pets-tinder.herokuapp.com'
 
 function Matching({ navigation }) {
   const socket = socketIOClient(ENDPOINT)
+  const swiper = useRef()
   const [data, setData] = useState()
   const [token, setToken] = useState('')
   const [cardIndex, setCardIndex] = useState(0)
-  const { isChanged, setIsChanged } = useContext(ChangeDataContext)
+  const { isChanged } = useContext(ChangeDataContext)
   const [cards, setCards] = useState()
 
   useEffect(async () => {
@@ -37,13 +38,9 @@ function Matching({ navigation }) {
     if (type === 'right') {
       if (data[index]) {
         setCardIndex(index)
-        console.log({
-          token: token,
-          userId: cards[index]._id,
-        })
         socket.emit('like-user', {
           token: token,
-          userId: cards[index].id,
+          userId: cards[index]._id,
         })
         socket.on('like-user-response', (data) => {
           console.log(data)
@@ -62,9 +59,19 @@ function Matching({ navigation }) {
           token={token}
           onSwiped={(type, index) => onSwiped(type, index)}
           cardIndex={cardIndex}
+          swiper={swiper}
         />
       )}
-      <MatchingAction />
+      <MatchingAction
+        onPress={(type) => {
+          if (type === 'right') {
+            swiper.current.swipeRight()
+          } else {
+            swiper.current.swipeLeft()
+          }
+          onSwiped(type, cardIndex)
+        }}
+      />
     </View>
   )
 }

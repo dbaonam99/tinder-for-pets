@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Swiper from 'react-native-deck-swiper'
 import {
   StyleSheet,
@@ -11,7 +11,13 @@ import { Icon } from 'react-native-gradient-icon'
 import LinearGradient from 'react-native-linear-gradient'
 const img = require('../../../assets/img/dinesh.jpg')
 
-export default function Matching({ cards, token, onSwiped, cardIndex }) {
+export default function Matching({
+  cards,
+  token,
+  onSwiped,
+  cardIndex,
+  swiper,
+}) {
   const renderCard = (card, index) => {
     return (
       <View style={styles.card}>
@@ -65,9 +71,7 @@ export default function Matching({ cards, token, onSwiped, cardIndex }) {
     <View style={styles.container}>
       {cards && (
         <Swiper
-          ref={(swiper) => {
-            swiper = swiper
-          }}
+          ref={swiper}
           backgroundColor={'#FFF'}
           // onSwiped={() => onSwiped('general')}
           onSwipedLeft={(index) => onSwiped('left', index)}

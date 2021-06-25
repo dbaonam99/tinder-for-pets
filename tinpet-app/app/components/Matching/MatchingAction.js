@@ -2,12 +2,12 @@ import React from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Icon } from 'react-native-gradient-icon'
 
-function MatchingAction({ navigation }) {
+function MatchingAction({ onPress }) {
   return (
     <View style={styles.action}>
       <TouchableOpacity
         style={styles.actionBtn}
-        onPress={() => navigation.navigate('setting')}
+        onPress={() => onPress('left')}
       >
         <View style={styles.actionIcon}>
           <Icon
@@ -34,7 +34,7 @@ function MatchingAction({ navigation }) {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.actionBtn}
-        onPress={() => navigation.navigate('setting')}
+        onPress={() => onPress('right')}
       >
         <View style={styles.actionIcon}>
           <Icon
@@ -61,7 +61,7 @@ function MatchingAction({ navigation }) {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.actionBtn}
-        onPress={() => navigation.navigate('setting')}
+        onPress={() => onPress('right')}
       >
         <View style={styles.actionIcon}>
           <Icon
@@ -96,6 +96,8 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-around',
+    position: 'absolute',
+    bottom: 0,
   },
   actionBtn: {
     width: '33.333333%',
