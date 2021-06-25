@@ -3,6 +3,7 @@ import {
   Text,
   StyleSheet,
   View,
+  ScrollView,
   TouchableOpacity,
   TextInput,
 } from 'react-native'
@@ -88,7 +89,7 @@ const Setting = ({ navigation }) => {
   }
 
   return (
-    <View
+    <ScrollView
       style={{
         backgroundColor: '#fff',
         marginTop: getStatusBarHeight(),
@@ -97,10 +98,7 @@ const Setting = ({ navigation }) => {
       <SettingTitle title={'Thiết lập'} onPress={handleOnPress} />
       <View style={styles.settingView}>
         <View style={styles.vip}>
-          <TouchableOpacity
-            style={styles.vipBox}
-            onPress={() => navigation.navigate('Checkout')}
-          >
+          <View style={styles.vipBox}>
             <Icon
               size={26}
               type={'ionicon'}
@@ -129,7 +127,7 @@ const Setting = ({ navigation }) => {
             <Text style={styles.vipText}>
               Xem ai Thích bạn & nhiều thứ khác
             </Text>
-          </TouchableOpacity>
+          </View>
         </View>
         <Text style={styles.titleSetting}>Thiết lập tài khoản</Text>
         <View style={styles.settingBox}>
@@ -228,8 +226,9 @@ const Setting = ({ navigation }) => {
             </Text>
           </View>
         </TouchableOpacity>
+        <Text style={styles.titleSetting}></Text>
       </View>
-    </View>
+    </ScrollView>
   )
 }
 const styles = StyleSheet.create({

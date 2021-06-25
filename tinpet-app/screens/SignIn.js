@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import AsyncStorage from '@react-native-community/async-storage'
 import {
   View,
@@ -7,6 +7,7 @@ import {
   ImageBackground,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 import LinearGradient from 'react-native-linear-gradient'
@@ -14,11 +15,13 @@ import LinearGradient from 'react-native-linear-gradient'
 const img = require('../assets/img/logo.png')
 
 const SignIn = ({ navigation }) => {
-  const [userName, setUserName] = React.useState('')
-  const [password, setPassword] = React.useState('')
-  const [status, setStatus] = React.useState('')
+  const [userName, setUserName] = useState('')
+  const [password, setPassword] = useState('')
+  const [status, setStatus] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const handleOnPress = async () => {
+    setLoading(true)
     fetch('https://pets-tinder.herokuapp.com/api/user/login', {
       method: 'POST',
       headers: {
@@ -36,6 +39,7 @@ const SignIn = ({ navigation }) => {
           await AsyncStorage.setItem('token', res.token)
           await AsyncStorage.setItem('user', JSON.stringify(res.user))
           navigation.navigate('Main')
+          setLoading(false)
         } else {
           setStatus(res.message)
         }
@@ -85,7 +89,11 @@ const SignIn = ({ navigation }) => {
           onChangeText={(value) => handleOnChangePassword(value)}
         />
         <TouchableOpacity style={styles.button2} onPress={handleOnPress}>
-          <Text style={styles.buttonText2}>ĐĂNG NHẬP</Text>
+          {loading ? (
+            <ActivityIndicator size={35} color="#fff" />
+          ) : (
+            <Text style={styles.buttonText2}>ĐĂNG NHẬP</Text>
+          )}
         </TouchableOpacity>
       </LinearGradient>
     </View>

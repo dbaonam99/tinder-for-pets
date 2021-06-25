@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   ImageBackground,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 import LinearGradient from 'react-native-linear-gradient'
@@ -14,14 +15,16 @@ import AsyncStorage from '@react-native-community/async-storage'
 const img = require('../assets/img/logo.png')
 
 const Login = ({ navigation }) => {
-  const [userName, setUserName] = React.useState('')
-  const [password, setPassword] = React.useState('')
-  const [fullName, setFullName] = React.useState('')
-  const [status, setStatus] = React.useState([])
-  const [confirmPassword, setConfirmPassword] = React.useState('')
+  const [userName, setUserName] = useState('')
+  const [password, setPassword] = useState('')
+  const [fullName, setFullName] = useState('')
+  const [status, setStatus] = useState([])
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const handleOnPress = async () => {
-    const location = await AsyncStorage.setItem('location', res.token)
+    setLoading(true)
+    const location = await AsyncStorage.getItem('location')
     fetch('https://pets-tinder.herokuapp.com/api/user/signup', {
       method: 'POST',
       headers: {
@@ -43,6 +46,7 @@ const Login = ({ navigation }) => {
           setTimeout(() => {
             navigation.navigate('SignIn')
           }, 1000)
+          setLoading(false)
         } else {
           setStatus([res.message, false])
         }
@@ -118,7 +122,11 @@ const Login = ({ navigation }) => {
           onChangeText={(value) => handleOnChangeConfirmPassword(value)}
         />
         <TouchableOpacity style={styles.button2} onPress={handleOnPress}>
-          <Text style={styles.buttonText2}>ĐĂNG KÝ</Text>
+          {loading ? (
+            <ActivityIndicator size={35} color="#fff" />
+          ) : (
+            <Text style={styles.buttonText2}>ĐĂNG KÝ</Text>
+          )}
         </TouchableOpacity>
       </LinearGradient>
     </View>

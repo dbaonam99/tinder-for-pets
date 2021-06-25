@@ -17,7 +17,6 @@ import SettingInfo from './screens/SettingInfo'
 import SignUp from './screens/SignUp'
 import SignIn from './screens/SignIn'
 import ChatBox from './screens/ChatBox'
-import Checkout from './screens/Checkout'
 
 const Stack = createStackNavigator()
 const Tab = createMaterialTopTabNavigator()
@@ -105,11 +104,6 @@ const App = () => {
           <Stack.Screen
             name="ChatBox"
             component={ChatBox}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Checkout"
-            component={Checkout}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

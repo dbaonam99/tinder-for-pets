@@ -39,6 +39,7 @@ const Login = ({ navigation }) => {
 
   useEffect(async () => {
     const value = await AsyncStorage.getItem('token')
+    const first_time = await AsyncStorage.getItem('first_time')
     if (value) {
       navigation.navigate('Main')
     }
@@ -54,8 +55,9 @@ const Login = ({ navigation }) => {
     )
   }
 
-  const _onDone = () => {
+  const _onDone = async () => {
     setShowRealApp(true)
+    await AsyncStorage.setItem('first_time', JSON.stringify(false))
   }
 
   const _renderNextButton = () => {
