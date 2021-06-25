@@ -67,6 +67,7 @@ const App = () => {
         <Stack.Navigator
           initialRouteName="Login"
           screenOptions={{
+            gestureEnabled: false,
             headerStyle: { elevation: 0 },
             cardStyle: { backgroundColor: '#FFF' },
           }}

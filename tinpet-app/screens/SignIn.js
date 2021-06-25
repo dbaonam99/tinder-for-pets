@@ -42,6 +42,7 @@ const SignIn = ({ navigation }) => {
           setLoading(false)
         } else {
           setStatus(res.message)
+          setLoading(false)
         }
       })
   }

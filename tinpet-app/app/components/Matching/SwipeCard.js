@@ -9,30 +9,10 @@ import {
 } from 'react-native'
 import { Icon } from 'react-native-gradient-icon'
 import LinearGradient from 'react-native-linear-gradient'
-import socketIOClient from 'socket.io-client'
-
-const ENDPOINT = 'https://pets-tinder.herokuapp.com'
 const img = require('../../../assets/img/dinesh.jpg')
 
-export default function Matching({ data, token }) {
-  const socket = socketIOClient(ENDPOINT)
-  const [cards, setCards] = useState()
-  const [swipedAllCards, setSwipedAllCards] = useState(false)
-  const [swipeDirection, setSwipeDirection] = useState('')
-  const [cardIndex, setCardIndex] = useState(0)
-
-  useEffect(() => {
-    const matchingList = []
-    if (data?.length > 0) {
-      data.map((item) => {
-        matchingList.push(item)
-      })
-      setCards(matchingList)
-    }
-  }, [])
-
+export default function Matching({ cards, token, onSwiped, cardIndex }) {
   const renderCard = (card, index) => {
-    console.log(card)
     return (
       <View style={styles.card}>
         <View style={styles.imageContainer}>
@@ -59,9 +39,11 @@ export default function Matching({ data, token }) {
                 />
               </Text>
             </View>
-            <View style={styles.second}>
-              <Text style={styles.bio}>{card.bio}</Text>
-            </View>
+            {card.bio && (
+              <View style={styles.second}>
+                <Text style={styles.bio}>{card.bio}</Text>
+              </View>
+            )}
             <View style={styles.third}>
               {card?.hobbies.map((item) => {
                 if (item) {
@@ -79,23 +61,6 @@ export default function Matching({ data, token }) {
     )
   }
 
-  const onSwiped = (type, index) => {
-    if (data[index]) {
-      setCardIndex(index)
-      socket.emit('like-user', {
-        token: token,
-        userId: cards[index].id,
-      })
-      socket.on('like-user-response', (data) => {
-        console.log(data)
-      })
-    }
-  }
-
-  const onSwipedAllCards = () => {
-    setSwipedAllCards(true)
-  }
-
   return (
     <View style={styles.container}>
       {cards && (
@@ -104,18 +69,17 @@ export default function Matching({ data, token }) {
             swiper = swiper
           }}
           backgroundColor={'#FFF'}
-          onSwiped={() => onSwiped('general')}
-          onSwipedLeft={() => onSwiped('left')}
+          // onSwiped={() => onSwiped('general')}
+          onSwipedLeft={(index) => onSwiped('left', index)}
           onSwipedRight={(index) => onSwiped('right', index)}
-          onSwipedTop={() => onSwiped('top')}
-          onSwipedBottom={() => onSwiped('bottom')}
+          onSwipedTop={(index) => onSwiped('right', index)}
+          onSwipedBottom={(index) => onSwiped('left', index)}
           // onTapCard={swipeLeft}
           cards={cards}
           cardIndex={cardIndex}
           cardVerticalMargin={20}
           cardHorizontalMargin={5}
           renderCard={renderCard}
-          onSwipedAll={onSwipedAllCards}
           stackSize={2}
           stackSeparation={0}
           overlayLabels={{

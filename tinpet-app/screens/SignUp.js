@@ -48,6 +48,7 @@ const Login = ({ navigation }) => {
           }, 1000)
           setLoading(false)
         } else {
+          setLoading(false)
           setStatus([res.message, false])
         }
       })
