@@ -5,9 +5,10 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native'
 
-function ChatInput({ message, onPress, onChange }) {
+function ChatInput({ message, onPress, onChange, loading }) {
   return (
     <View style={styles.inputBox}>
       <TextInput
@@ -20,7 +21,11 @@ function ChatInput({ message, onPress, onChange }) {
         onChangeText={(value) => onChange(value)}
       />
       <TouchableOpacity onPress={onPress} style={styles.sendMessageButton}>
-        <Text style={styles.sendMessage}>Gửi</Text>
+        {loading ? (
+          <ActivityIndicator size={30} color="#000" style={styles.loading} />
+        ) : (
+          <Text style={styles.sendMessage}>Gửi</Text>
+        )}
       </TouchableOpacity>
     </View>
   )
@@ -50,6 +55,11 @@ const styles = StyleSheet.create({
   sendMessage: {
     fontSize: 18,
     color: '#aaa',
+  },
+  loading: {
+    position: 'absolute',
+    bottom: -5,
+    right: 0,
   },
 })
 

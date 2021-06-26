@@ -10,7 +10,7 @@ function Liked() {
 
   useEffect(async () => {
     const value = await AsyncStorage.getItem('user')
-    const matched_list = JSON.parse(value).matched_list
+    const matched_list = JSON.parse(value).user_liked_you
     setData(matched_list)
   }, [isChanged])
 
@@ -68,9 +68,10 @@ const styles = StyleSheet.create({
   },
   likedList: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     flexWrap: 'wrap',
+    marginLeft: 8,
   },
   likedListTitle: {
     width: '100%',

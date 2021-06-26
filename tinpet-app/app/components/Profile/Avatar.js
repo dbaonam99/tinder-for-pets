@@ -56,11 +56,13 @@ function Avatar({ data }) {
         />
       </TouchableOpacity>
       <View style={styles.info}>
-        <Text style={styles.name}>{data.full_name || data.username}</Text>
+        <View style={styles.nameLine}>
+          <Text style={styles.name}>{data.full_name || data.username}</Text>
+          <Text style={styles.icon}>
+            <Icon size={25} type="material" name="verified" color="#0c70ff" />
+          </Text>
+        </View>
         <Text style={styles.smallInfo}>{data?.address}</Text>
-        <Text style={styles.icon}>
-          <Icon size={25} type="material" name="verified" color="#0c70ff" />
-        </Text>
       </View>
     </View>
   )
@@ -93,24 +95,25 @@ const styles = StyleSheet.create({
   info: {
     justifyContent: 'center',
   },
+  nameLine: {
+    alignSelf: 'center',
+  },
   name: {
-    position: 'relative',
     fontSize: 24,
     fontWeight: 'bold',
     marginTop: 20,
     textAlign: 'center',
+  },
+  icon: {
+    position: 'absolute',
+    top: 24,
+    right: -30,
   },
   smallInfo: {
     marginTop: 5,
     fontSize: 13,
     textAlign: 'center',
     color: '#777',
-    fontWeight: 'bold',
-  },
-  icon: {
-    position: 'absolute',
-    top: 25,
-    right: -35,
   },
 })
 

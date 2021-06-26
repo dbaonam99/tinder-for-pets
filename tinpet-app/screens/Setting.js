@@ -12,6 +12,7 @@ import Slider from '@react-native-community/slider'
 import AsyncStorage from '@react-native-community/async-storage'
 import SettingTitle from '../app/components/Profile/SettingTitle'
 import { ChangeDataContext } from '../app/contexts/ChangeData'
+import { MatchingListContext } from '../app/contexts/MatchingList'
 import RNPickerSelect from 'react-native-picker-select'
 import { Icon } from 'react-native-gradient-icon'
 import LinearGradient from 'react-native-linear-gradient'
@@ -46,6 +47,7 @@ const pickerStyle = {
 
 const Setting = ({ navigation }) => {
   const { isChanged, setIsChanged } = useContext(ChangeDataContext)
+  const { updateMatchingList } = useContext(MatchingListContext)
   const [area, setArea] = useState(0)
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
@@ -80,10 +82,11 @@ const Setting = ({ navigation }) => {
       .then((response) => response.json())
       .then(async (res) => {
         if (res.status === 1) {
+          console.log(res)
           await AsyncStorage.setItem('user', JSON.stringify(res.data))
-          setIsChanged(!isChanged)
+          updateMatchingList()
         } else {
-          setStatus(res.message)
+          console.log(res.message)
         }
       })
   }
@@ -212,6 +215,7 @@ const Setting = ({ navigation }) => {
             await AsyncStorage.setItem('showIntro', JSON.stringify(false))
             await AsyncStorage.removeItem('token')
             await AsyncStorage.removeItem('user')
+            await AsyncStorage.removeItem('matchingList')
           }}
         >
           <View style={styles.settingItemBorder}>

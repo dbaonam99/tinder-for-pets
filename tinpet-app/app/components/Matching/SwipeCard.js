@@ -7,8 +7,8 @@ import {
   Dimensions,
   ImageBackground,
 } from 'react-native'
-import { Icon } from 'react-native-gradient-icon'
 import LinearGradient from 'react-native-linear-gradient'
+import { Icon } from 'react-native-gradient-icon'
 const img = require('../../../assets/img/dinesh.jpg')
 
 export default function Matching({
@@ -45,6 +45,16 @@ export default function Matching({
                 />
               </Text>
             </View>
+            <View style={styles.kmBox}>
+              <Icon
+                size={18}
+                type="material"
+                name="place"
+                color="#fff"
+                style={{ marginRight: 5 }}
+              />
+              <Text style={styles.km}>Cách đây {card.km} km</Text>
+            </View>
             {card.bio && (
               <View style={styles.second}>
                 <Text style={styles.bio}>{card.bio}</Text>
@@ -54,8 +64,8 @@ export default function Matching({
               {card?.hobbies.map((item) => {
                 if (item) {
                   return (
-                    <View style={styles.hobby} key={item}>
-                      <Text style={styles.hobbyText}>{item}</Text>
+                    <View style={styles.hobby} key={item._id}>
+                      <Text style={styles.hobbyText}>{item.name}</Text>
                     </View>
                   )
                 } else return
@@ -72,7 +82,7 @@ export default function Matching({
       {cards && (
         <Swiper
           ref={swiper}
-          backgroundColor={'#FFF'}
+          backgroundColor="transparent"
           // onSwiped={() => onSwiped('general')}
           onSwipedLeft={(index) => onSwiped('left', index)}
           onSwipedRight={(index) => onSwiped('right', index)}
@@ -222,7 +232,15 @@ const styles = StyleSheet.create({
   first: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 10,
+  },
+  kmBox: {
+    flexDirection: 'row',
     marginVertical: 10,
+  },
+  km: {
+    color: '#FFF',
+    fontSize: 16,
   },
   name: {
     fontSize: 34,

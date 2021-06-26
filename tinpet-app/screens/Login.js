@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native'
+import Geolocation from '@react-native-community/geolocation'
 import LinearGradient from 'react-native-linear-gradient'
 import AppIntroSlider from 'react-native-app-intro-slider'
 
@@ -36,6 +37,7 @@ const img = require('../assets/img/logo.png')
 
 const Login = ({ navigation }) => {
   const [showRealApp, setShowRealApp] = useState(false)
+  const [location, setLocation] = useState({})
 
   useEffect(async () => {
     const value = await AsyncStorage.getItem('token')
@@ -46,6 +48,25 @@ const Login = ({ navigation }) => {
     if (value) {
       navigation.navigate('Main')
     }
+  }, [])
+
+  useEffect(() => {
+    Geolocation.getCurrentPosition(async (info) => {
+      fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${info.coords.latitude}&lon=${info.coords.longitude}`,
+        {
+          method: 'GET',
+        }
+      )
+        .then((response) => response.json())
+        .then(async (res) => {
+          setLocation({
+            lat: info.coords.latitude,
+            lng: info.coords.longitude,
+            address: `${res.address.city}, ${res.address.state}`,
+          })
+        })
+    })
   }, [])
 
   const _renderItem = ({ item }) => {
@@ -88,13 +109,13 @@ const Login = ({ navigation }) => {
           </View>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('SignUp')}
+            onPress={() => navigation.navigate('SignUp', { location })}
           >
             <Text style={styles.buttonText}>LẬP TÀI KHOẢN</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button2}
-            onPress={() => navigation.navigate('SignIn')}
+            onPress={() => navigation.navigate('SignIn', { location })}
           >
             <Text style={styles.buttonText2}>ĐĂNG NHẬP</Text>
           </TouchableOpacity>

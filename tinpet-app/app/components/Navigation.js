@@ -1,7 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Text, TouchableOpacity, View, StyleSheet } from 'react-native'
+import socketIOClient from 'socket.io-client'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 import { ChangeDataContext } from '../../app/contexts/ChangeData'
+import { MatchingListContext } from '../../app/contexts/MatchingList'
 import { Icon } from 'react-native-gradient-icon'
 import AsyncStorage from '@react-native-community/async-storage'
 
@@ -12,15 +14,27 @@ const icons = [
   { name: 'person', type: 'ionicon' },
   { name: 'person', type: 'ionicon' },
 ]
+const ENDPOINT = 'https://pets-tinder.herokuapp.com'
 
 const Navigation = ({ state, navigation }) => {
   const [likedLength, setLikedLength] = useState([])
+  const socket = socketIOClient(ENDPOINT)
+  const { updateMatchingList } = useContext(MatchingListContext)
   const { isChanged } = useContext(ChangeDataContext)
+
+  useEffect(() => {
+    socket.on('like-user-response', async (data) => {
+      if (data.user_id) {
+        setLikedLength(data.data.length)
+      }
+    })
+  }, [])
 
   useEffect(async () => {
     const value = await AsyncStorage.getItem('user')
-    const matched_list = JSON.parse(value).matched_list
-    setLikedLength(matched_list.length)
+    const data = JSON.parse(value)
+    console.log(data.user_liked_you.length)
+    setLikedLength(data.user_liked_you.length)
   }, [isChanged])
 
   return (
@@ -39,7 +53,10 @@ const Navigation = ({ state, navigation }) => {
         const type = icons[index].type
         const isFocused = state.index === index
 
-        const onPress = () => {
+        const onPress = async () => {
+          if (route.name === 'Matching') {
+            updateMatchingList()
+          }
           const event = navigation.emit({
             type: 'tabPress',
             target: route.key,

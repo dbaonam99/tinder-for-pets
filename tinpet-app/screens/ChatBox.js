@@ -13,6 +13,7 @@ const ChatBox = ({ navigation, route }) => {
   const { data, token, chat, user } = route.params
   const [chatList, setChatList] = useState([])
   const [message, setMessage] = useState('')
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     setChatList(chat)
@@ -21,23 +22,24 @@ const ChatBox = ({ navigation, route }) => {
   useEffect(() => {
     socket.emit('join', {
       token: token,
-      userId: data[0]._id,
+      userIds: [data._id],
     })
     socket.on('send-message-response', (data) => {
-      console.log('c')
+      setMessage('')
+      setLoading(false)
       setChatList((prevState) => [...prevState, data.data])
     })
   }, [])
 
   const handleOnPress = () => {
-    setMessage('')
+    setLoading(true)
     socket.emit('join', {
       token: token,
-      userId: data[0]._id,
+      userIds: [data._id],
     })
     socket.emit('send-message', {
       token: token,
-      userId: data[0]._id,
+      userId: data._id,
       message: message,
     })
   }
@@ -80,6 +82,7 @@ const ChatBox = ({ navigation, route }) => {
         </View>
       </ScrollView>
       <ChatInput
+        loading={loading}
         message={message}
         onPress={handleOnPress}
         onChange={(value) => setMessage(value)}

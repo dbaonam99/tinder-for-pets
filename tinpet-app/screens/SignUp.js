@@ -10,13 +10,30 @@ import {
 } from 'react-native'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 import LinearGradient from 'react-native-linear-gradient'
-import AsyncStorage from '@react-native-community/async-storage'
+import RNPickerSelect from 'react-native-picker-select'
+
+const pickerStyle = {
+  inputIOS: {
+    width: '90%',
+    backgroundColor: '#FFF',
+    height: 50,
+    marginBottom: 25,
+    borderRadius: 50,
+    marginLeft: 20,
+    paddingHorizontal: 20,
+  },
+  placeholder: {
+    color: '#747474',
+  },
+}
 
 const img = require('../assets/img/logo.png')
 
-const Login = ({ navigation }) => {
+const Login = ({ navigation, route }) => {
+  const { location } = route.params
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
+  const [gender, setGender] = useState('')
   const [fullName, setFullName] = useState('')
   const [status, setStatus] = useState([])
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -24,7 +41,6 @@ const Login = ({ navigation }) => {
 
   const handleOnPress = async () => {
     setLoading(true)
-    const location = await AsyncStorage.getItem('location')
     fetch('https://pets-tinder.herokuapp.com/api/user/signup', {
       method: 'POST',
       headers: {
@@ -34,9 +50,12 @@ const Login = ({ navigation }) => {
       body: JSON.stringify({
         full_name: fullName,
         username: userName,
-        password: password,
-        confirmPassword: confirmPassword,
-        address: location,
+        password,
+        gender,
+        confirmPassword,
+        address: location.address,
+        lat: location.lat,
+        lng: location.lng,
       }),
     })
       .then((response) => response.json())
@@ -44,7 +63,7 @@ const Login = ({ navigation }) => {
         if (res.status === 1) {
           setStatus([res.message, true])
           setTimeout(() => {
-            navigation.navigate('SignIn')
+            navigation.navigate('SignIn', { location })
           }, 1000)
           setLoading(false)
         } else {
@@ -52,22 +71,6 @@ const Login = ({ navigation }) => {
           setStatus([res.message, false])
         }
       })
-  }
-
-  const handleOnChangeFullName = (value) => {
-    setFullName(value)
-  }
-
-  const handleOnChangeUserName = (value) => {
-    setUserName(value)
-  }
-
-  const handleOnChangePassword = (value) => {
-    setPassword(value)
-  }
-
-  const handleOnChangeConfirmPassword = (value) => {
-    setConfirmPassword(value)
   }
 
   return (
@@ -93,7 +96,7 @@ const Login = ({ navigation }) => {
           placeholderTextColor="#666"
           autoCapitalize="none"
           value={userName}
-          onChangeText={(value) => handleOnChangeUserName(value)}
+          onChangeText={(value) => setUserName(value)}
         />
         <TextInput
           style={styles.input}
@@ -102,7 +105,22 @@ const Login = ({ navigation }) => {
           placeholderTextColor="#666"
           autoCapitalize="none"
           value={fullName}
-          onChangeText={(value) => handleOnChangeFullName(value)}
+          onChangeText={(value) => setFullName(value)}
+        />
+        <RNPickerSelect
+          placeholder={{
+            label: 'Lựa chọn giới tính...',
+            value: null,
+          }}
+          style={pickerStyle}
+          onValueChange={(value) => {
+            setGender(value)
+          }}
+          value={gender}
+          items={[
+            { label: 'Loài đực', value: 1 },
+            { label: 'Loài cái', value: 0 },
+          ]}
         />
         <TextInput
           style={styles.input}
@@ -111,7 +129,7 @@ const Login = ({ navigation }) => {
           placeholderTextColor="#666"
           autoCapitalize="none"
           value={password}
-          onChangeText={(value) => handleOnChangePassword(value)}
+          onChangeText={(value) => setPassword(value)}
         />
         <TextInput
           style={styles.input}
@@ -120,7 +138,7 @@ const Login = ({ navigation }) => {
           placeholderTextColor="#666"
           autoCapitalize="none"
           value={confirmPassword}
-          onChangeText={(value) => handleOnChangeConfirmPassword(value)}
+          onChangeText={(value) => setConfirmPassword(value)}
         />
         <TouchableOpacity style={styles.button2} onPress={handleOnPress}>
           {loading ? (
@@ -138,7 +156,7 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 30,
     position: 'absolute',
-    bottom: 130,
+    bottom: 110,
     borderRadius: 50,
   },
   error: {

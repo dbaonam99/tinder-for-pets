@@ -16,10 +16,11 @@ function Chat({ navigation }) {
 
   useEffect(async () => {
     const value = await AsyncStorage.getItem('user')
+    const matchingList = await AsyncStorage.getItem('matchingList')
     const token = await AsyncStorage.getItem('token')
     const data = JSON.parse(value)
     setUser(data)
-    setData(data.matching_list)
+    setData(JSON.parse(matchingList))
 
     fetch(`https://pets-tinder.herokuapp.com/api/chat?userId=${data._id}`, {
       method: 'GET',
@@ -35,7 +36,7 @@ function Chat({ navigation }) {
       })
   }, [isChanged])
 
-  const handleOnPress = async () => {
+  const handleOnPress = async (item) => {
     const token = await AsyncStorage.getItem('token')
     fetch(`https://pets-tinder.herokuapp.com/api/chat?userId=${data[0]._id}`, {
       method: 'GET',
@@ -47,9 +48,14 @@ function Chat({ navigation }) {
       .then(async (res) => {
         socket.emit('join', {
           token: token,
-          userId: data[0]._id,
+          userId: [data[0]._id],
         })
-        navigation.navigate('ChatBox', { data, token, chat: res.data, user })
+        navigation.navigate('ChatBox', {
+          data: item,
+          token,
+          chat: res.data,
+          user,
+        })
       })
   }
 
@@ -70,7 +76,7 @@ function Chat({ navigation }) {
             key={index}
             name={item.full_name || item.username}
             avatar={item.avatar}
-            onPress={handleOnPress}
+            onPress={() => handleOnPress(item)}
           />
         ))}
       </ScrollView>

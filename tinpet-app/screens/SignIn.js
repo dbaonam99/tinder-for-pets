@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import AsyncStorage from '@react-native-community/async-storage'
 import {
   View,
@@ -11,10 +11,15 @@ import {
 } from 'react-native'
 import { getStatusBarHeight } from 'react-native-status-bar-height'
 import LinearGradient from 'react-native-linear-gradient'
+import { ChangeDataContext } from '../app/contexts/ChangeData'
+import { MatchingListContext } from '../app/contexts/MatchingList'
 
 const img = require('../assets/img/logo.png')
 
-const SignIn = ({ navigation }) => {
+const SignIn = ({ navigation, route }) => {
+  const { location } = route.params
+  const { setIsChanged } = useContext(ChangeDataContext)
+  const { updateMatchingList } = useContext(MatchingListContext)
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [status, setStatus] = useState('')
@@ -31,6 +36,9 @@ const SignIn = ({ navigation }) => {
       body: JSON.stringify({
         username: userName,
         password: password,
+        address: location.address,
+        lat: location.lat,
+        lng: location.lng,
       }),
     })
       .then((response) => response.json())
@@ -38,6 +46,11 @@ const SignIn = ({ navigation }) => {
         if (res.status === 1) {
           await AsyncStorage.setItem('token', res.token)
           await AsyncStorage.setItem('user', JSON.stringify(res.user))
+          await AsyncStorage.setItem(
+            'matchingList',
+            JSON.stringify(res.user.matching_list)
+          )
+          updateMatchingList()
           navigation.navigate('Main')
           setLoading(false)
         } else {
