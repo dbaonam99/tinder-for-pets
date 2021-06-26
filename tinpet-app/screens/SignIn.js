@@ -94,6 +94,7 @@ const SignIn = ({ navigation, route }) => {
           onChangeText={(value) => handleOnChangeUserName(value)}
         />
         <TextInput
+          secureTextEntry={true}
           style={styles.input}
           underlineColorAndroid="transparent"
           placeholder="Mật khẩu"

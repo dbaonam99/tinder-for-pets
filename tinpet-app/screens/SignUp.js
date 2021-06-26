@@ -123,6 +123,7 @@ const Login = ({ navigation, route }) => {
           ]}
         />
         <TextInput
+          secureTextEntry={true}
           style={styles.input}
           underlineColorAndroid="transparent"
           placeholder="Mật khẩu"
@@ -132,6 +133,7 @@ const Login = ({ navigation, route }) => {
           onChangeText={(value) => setPassword(value)}
         />
         <TextInput
+          secureTextEntry={true}
           style={styles.input}
           underlineColorAndroid="transparent"
           placeholder="Nhập lại mật khẩu"
@@ -193,7 +195,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 80,
+    marginBottom: 50,
   },
   logoText: {
     fontSize: 56,

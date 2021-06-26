@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import socketIOClient from 'socket.io-client'
+import { Icon } from 'react-native-gradient-icon'
 import { StyleSheet, View, Text, ImageBackground } from 'react-native'
 import MatchingAction from '../app/components/Matching/MatchingAction'
 import SwipeCard from '../app/components/Matching/SwipeCard'
@@ -58,7 +59,7 @@ function Matching({}) {
   }
 
   return (
-    <View style={styles.container} onPress={() => {}}>
+    <View style={styles.container}>
       <View style={styles.nothingLeft}>
         <View style={styles.avatarBox}>
           <ImageBackground
