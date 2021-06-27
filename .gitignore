@@ -1,44 +1,44 @@
 # OSX
 #
 .DS_Store
-/tinpet-app/.DS_Store
+/.DS_Store
 
-/tinpet-app/build/
-/tinpet-app/*.pbxuser
-/tinpet-app/!default.pbxuser
-/tinpet-app/*.mode1v3
-/tinpet-app/!default.mode1v3
-/tinpet-app/*.mode2v3
-/tinpet-app/!default.mode2v3
-/tinpet-app/*.perspectivev3
-/tinpet-app/!default.perspectivev3
-/tinpet-app/xcuserdata
-/tinpet-app/*.xccheckout
-/tinpet-app/*.moved-aside
-/tinpet-app/DerivedData
-/tinpet-app/*.hmap
-/tinpet-app/*.ipa
-/tinpet-app/*.xcuserstate
+/build/
+/*.pbxuser
+/!default.pbxuser
+/*.mode1v3
+/!default.mode1v3
+/*.mode2v3
+/!default.mode2v3
+/*.perspectivev3
+/!default.perspectivev3
+/xcuserdata
+/*.xccheckout
+/*.moved-aside
+/DerivedData
+/*.hmap
+/*.ipa
+/*.xcuserstate
 
 # Android/IntelliJ
 #
-/tinpet-app/build/
-/tinpet-app/.idea
-/tinpet-app/.gradle
-/tinpet-app/local.properties
-/tinpet-app/*.iml
+/build/
+/.idea
+/.gradle
+/local.properties
+/*.iml
 
 # node.js
 #
-/tinpet-app/node_modules/
-/tinpet-app/npm-debug.log
-/tinpet-app/yarn-error.log
+/node_modules/
+/npm-debug.log
+/yarn-error.log
 
 # BUCK
-/tinpet-app/buck-out/
-/tinpet-app/\.buckd/
-/tinpet-app/*.keystore
-/tinpet-app/!debug.keystore
+/buck-out/
+/\.buckd/
+/*.keystore
+/!debug.keystore
 
 # fastlane
 #
@@ -47,12 +47,12 @@
 # For more information about the recommended setup visit:
 # https://docs.fastlane.tools/best-practices/source-control/
 
-/tinpet-app/*/fastlane/report.xml
-/tinpet-app/*/fastlane/Preview.html
-/tinpet-app/*/fastlane/screenshots
+/*/fastlane/report.xml
+/*/fastlane/Preview.html
+/*/fastlane/screenshots
 
 # Bundle artifact
-/tinpet-app/*.jsbundle
+/*.jsbundle
 
 # CocoaPods
-/tinpet-app/ios/Pods/
+/ios/Pods/

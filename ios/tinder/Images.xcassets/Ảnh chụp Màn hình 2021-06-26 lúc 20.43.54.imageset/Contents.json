@@ -1,0 +1,21 @@
+{
+  "images" : [
+    {
+      "filename" : "Ảnh chụp Màn hình 2021-06-26 lúc 20.43.54.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
